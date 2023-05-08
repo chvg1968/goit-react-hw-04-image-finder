@@ -134,8 +134,8 @@ img {
 
 .ImageGallery {
     display: grid;
-    max-width: calc(100vw - 48px);
-    grid-template-columns: repeat(4, minmax(450px, 1fr));
+    max-width: calc(100vw-48px);
+    grid-template-columns: repeat(4, minmax(320px, 1fr));
     grid-gap: 16px;
     margin-top: 0;
     margin-bottom: 0;
@@ -227,4 +227,13 @@ img {
 .Button:hover,
 .Button:focus {
     background-color: #303f9f;
+}
+
+.ErrorMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 24px;
+    font-weight: bold;
 }

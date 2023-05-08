@@ -62,26 +62,46 @@ class App extends Component {
   fetchImages() {
     if (this.state.searchQuery !== "") {
       this.setState({ loading: true, error: null });
-
+  
       fetch(
         `${PIXABAY_API_URL}${this.state.searchQuery}&page=${this.state.page}`
       )
         .then((response) => response.json())
         .then((data) => {
-          this.setState((prevState) => ({
-            images: 
-            prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
-            loading: false,
-          }));
+          if (data.totalHits === 0) {
+            this.setState({
+              error: "No images found for the search query.",
+              loading: false,
+              images: [], // Clear the images array if an error occurs
+            });
+            alert("No images found for the search query.");
+          } else {
+            this.setState((prevState) => ({
+              images: 
+              prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
+              loading: false,
+            }));
+          }
         })
         .catch(() => {
           this.setState({
             error: "Error fetching images. Please try again later.",
             loading: false,
+            images: [], // Clear the images array if an error occurs
           });
+          alert("Error fetching images. Please try again later.");
         });
+    } else {
+      this.setState({
+        error: "Please enter a search query.",
+        loading: false,
+        images: [], // Clear the images array if an error occurs
+      });
+      alert("Please enter a search query.");
     }
   }
+  
+  
 
   render() {
     const { images, selectedImage, loading, error } = this.state;
@@ -89,7 +109,7 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar onSearch={this.handleSearch} />
-        {error && <p>{error}</p>}
+        {error && <div className="ErrorMessage">{error}</div>}
         <ImageGallery images={images} onImageClick={this.handleImageClick} />
         {loading && <Loader />}
         {!loading && images.length > 0 && (

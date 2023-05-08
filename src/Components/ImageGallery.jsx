@@ -5,7 +5,7 @@ class ImageGallery extends Component {
   render() {
     return (
       <div className="ImageGallery">
-        {this.props.images.map((image, index) => (
+        {this.props.images.slice(0,12).map((image, index) => (
           <img className="ImageGalleryItem"
             key={index}
             src={image.webformatURL}
