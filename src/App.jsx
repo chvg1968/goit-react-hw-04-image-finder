@@ -47,6 +47,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.setState({error:null});
     this.fetchImages();
   }
 
@@ -77,8 +78,8 @@ class App extends Component {
             alert("No images found for the search query.");
           } else {
             this.setState((prevState) => ({
-              images: 
-              prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
+              images:
+                prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
               loading: false,
             }));
           }
@@ -102,6 +103,7 @@ class App extends Component {
   }
   
   
+  
 
   render() {
     const { images, selectedImage, loading, error } = this.state;
@@ -109,7 +111,7 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar onSearch={this.handleSearch} />
-        {error && <div className="ErrorMessage">{error}</div>}
+        {error && <div className="ErrorMessage">{error}</div>}  
         <ImageGallery images={images} onImageClick={this.handleImageClick} />
         {loading && <Loader />}
         {!loading && images.length > 0 && (

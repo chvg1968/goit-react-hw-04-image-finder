@@ -33,12 +33,10 @@ class Loader extends Component {
   }
 }
 
-// Loader.propTypes = {
-//   loading: PropTypes.bool.isRequired,
-//   color: PropTypes.string.isRequired,
-//   size: PropTypes.number.isRequired,
-//   onToggleLoading: PropTypes.func.isRequired,
-//   onColorChange: PropTypes.func.isRequired,
-// };
+Loader.propTypes = {
+  color: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  onColorChange: PropTypes.func.isRequired,
+};
 
 export default Loader;
