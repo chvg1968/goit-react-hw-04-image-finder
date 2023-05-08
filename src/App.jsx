@@ -47,7 +47,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({error:null});
     this.fetchImages();
   }
 
@@ -98,7 +97,7 @@ class App extends Component {
         loading: false,
         images: [], // Clear the images array if an error occurs
       });
-      alert("Please enter a search query.");
+      // alert("Please enter a search query.");
     }
   }
   
