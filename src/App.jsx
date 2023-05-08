@@ -7,7 +7,7 @@ import Modal from "./Components/Modal";
 import "./Styles/styles.css";
 
 const PIXABAY_API_KEY = "34211460-a83c7ce03bca96928d95fb98a";
-const PIXABAY_API_URL = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&image_type=photo&pretty=true&q=&per-page=12`;
+const PIXABAY_API_URL = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&image_type=photo&pretty=true&q=`;
 
 
 
