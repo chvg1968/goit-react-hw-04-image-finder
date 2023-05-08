@@ -69,7 +69,8 @@ class App extends Component {
         .then((response) => response.json())
         .then((data) => {
           this.setState((prevState) => ({
-            images: [...prevState.images, ...data.hits],
+            images: 
+            prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
             loading: false,
           }));
         })
