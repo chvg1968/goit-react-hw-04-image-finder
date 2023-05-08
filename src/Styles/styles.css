@@ -237,3 +237,7 @@ img {
     font-size: 24px;
     font-weight: bold;
 }
+
+.sweet-loading {
+    display: none;
+}
