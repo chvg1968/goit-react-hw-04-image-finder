@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
-    base: '/goit-react-hw-03-image-finder/',
+    base: 'https://chvg1968.github.io/goit-react-hw-03-image-finder/',
 })
