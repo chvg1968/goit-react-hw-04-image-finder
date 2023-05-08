@@ -239,5 +239,12 @@ img {
 }
 
 .sweet-loading {
-    display: none;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    transition: 5s;
 }

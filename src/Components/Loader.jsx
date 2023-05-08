@@ -5,7 +5,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 const overrideStyle = {
   display: "block",
   margin: "0 auto",
-  borderColor: "red",
+  borderColor: "#23667e",
+  size: 150,
+  color: "#00ff11"
 };
 
 class Loader extends Component {
@@ -14,17 +16,14 @@ class Loader extends Component {
   };
 
   render() {
-    const { loading, color, size, onToggleLoading } = this.props;
+    const { loading, color, size } = this.props;
     return (
       <div className="sweet-loading">
-        <button onClick={onToggleLoading}>Toggle Loader</button>
-        <input value={color} onChange={this.handleColorChange} placeholder="Color of the loader" />
-
         <ClipLoader
-          color="#36d7b7"
+          color={color}
           loading={loading}
-          cssOverride={overrideStyle}
-          size={45}
+          css={overrideStyle}
+          size={size}
           aria-label="Loading Spinner"
           data-testid="loader"
         />
@@ -37,6 +36,7 @@ Loader.propTypes = {
   color: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   onColorChange: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default Loader;
