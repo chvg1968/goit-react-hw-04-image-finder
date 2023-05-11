@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -7,36 +7,37 @@ const overrideStyle = {
   margin: "0 auto",
   borderColor: "#23667e",
   size: 150,
-  color: "#00ff11"
+  color: "#00ff11",
 };
 
-class Loader extends Component {
-  handleColorChange = (e) => {
-    this.props.onColorChange(e.target.value);
+function Loader(props) {
+  const { loading, color, size, onColorChange } = props;
+  const [override, setOverride] = useState(overrideStyle);
+
+  const handleColorChange = (e) => {
+    onColorChange(e.target.value);
   };
 
-  render() {
-    const { loading, color, size } = this.props;
-    return (
-      <div className="sweet-loading">
-        <ClipLoader
-          color={color}
-          loading={loading}
-          css={overrideStyle}
-          size={size}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="sweet-loading">
+      <ClipLoader
+        color={color}
+        loading={loading}
+        css={override}
+        size={size}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+      <input type="color" value={color} onChange={handleColorChange} />
+    </div>
+  );
 }
 
 Loader.propTypes = {
   color: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   onColorChange: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Loader;

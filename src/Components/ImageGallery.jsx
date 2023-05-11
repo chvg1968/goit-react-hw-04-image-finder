@@ -1,21 +1,27 @@
-import { Component } from "react";
-import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-class ImageGallery extends Component {
-  render() {
-    return (
-      <div className="ImageGallery">
-        {this.props.images.map((image, index) => (
-          <img className="ImageGalleryItem"
-            key={index}
-            src={image.webformatURL}
-            alt={image.tags}
-            onClick={() => this.props.onImageClick(image)}
-          />
-        ))}
-      </div>
-    );
-  }
+function ImageGallery(props) {
+  const { images, onImageClick } = props;
+  const [galleryImages, setGalleryImages] = useState([]);
+
+  useEffect(() => {
+    setGalleryImages(images);
+  }, [images]);
+
+  return (
+    <div className="ImageGallery">
+      {galleryImages.map((image, index) => (
+        <img
+          className="ImageGalleryItem"
+          key={index}
+          src={image.webformatURL}
+          alt={image.tags}
+          onClick={() => onImageClick(image)}
+        />
+      ))}
+    </div>
+  );
 }
 
 ImageGallery.propTypes = {
@@ -24,7 +30,7 @@ ImageGallery.propTypes = {
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,
       tags: PropTypes.string.isRequired,
-    }).isRequired,
+    }).isRequired
   ).isRequired,
   onImageClick: PropTypes.func.isRequired,
 };

@@ -1,42 +1,55 @@
-import { Component } from "react";
-import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
+function SearchBar({ onSearch }) {
+  const [query, setQuery] = useState("");
 
-    this.state = {
-      query: "",
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  const handleInputChange = (event) => {
+    setQuery(event.target.value);
   }
 
-  handleInputChange(event) {
-    this.setState({ query: event.target.value });
-  }
-
-  handleFormSubmit(event) {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    this.props.onSearch(this.state.query);
+    onSearch(query);
   }
 
-  render() {
-    return (
-      <div className="Searchbar">
-      <form className="SearchForm"  onSubmit={this.handleFormSubmit}>
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        onSearch(query);
+      }
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.keyCode === 27) {
+        onSearch(query);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [query, onSearch]);
+
+  const searchRef = useRef(null);
+
+  return (
+    <div className="Searchbar" ref={searchRef}>
+      <form className="SearchForm" onSubmit={handleFormSubmit}>
         <input className="SearchForm-input"
           type="text"
-          value={this.state.query}
-          onChange={this.handleInputChange}
+          value={query}
+          onChange={handleInputChange}
           placeholder="Search images and photos"
         />
         <button className="SearchForm-button" type="submit">Search</button>
       </form>
-      </div>
-    );
-  }
+    </div>
+  );
 }
 
 SearchBar.propTypes = {

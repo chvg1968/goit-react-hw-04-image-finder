@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./Components/SearchBar";
 import ImageGallery from "./Components/ImageGallery";
 import Button from "./Components/Button";
@@ -9,124 +9,85 @@ import "./Styles/styles.css";
 const PIXABAY_API_KEY = "34211460-a83c7ce03bca96928d95fb98a";
 const PIXABAY_API_URL = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&image_type=photo&pretty=true&q=`;
 
+function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setPage(1);
+  };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+  const handleLoadMore = () => {
+    setPage(page + 1);
+  };
 
-    this.state = {
-      searchQuery: "",
-      page: 1,
-      images: [],
-      selectedImage: null,
-      loading: false,
-      error: null,
-    };
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
 
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleLoadMore = this.handleLoadMore.bind(this);
-    this.handleImageClick = this.handleImageClick.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-  }
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
 
-  handleSearch(query) {
-    this.setState({ searchQuery: query, page: 1 });
-  }
+  const fetchImages = () => {
+    if (searchQuery !== "") {
+      setLoading(true);
+      setError(null);
 
-  handleLoadMore() {
-    this.setState((prevState) => ({ page: prevState.page + 1 }));
-  }
-
-  handleImageClick(image) {
-    this.setState({ selectedImage: image });
-  }
-
-  handleCloseModal() {
-    this.setState({ selectedImage: null });
-  }
-
-  componentDidMount() {
-    this.fetchImages();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.searchQuery !== prevState.searchQuery ||
-      this.state.page !== prevState.page
-    ) {
-      this.fetchImages();
-    }
-  }
-
-  fetchImages() {
-    if (this.state.searchQuery !== "") {
-      this.setState({ loading: true, error: null });
-  
-      fetch(
-        `${PIXABAY_API_URL}${this.state.searchQuery}&page=${this.state.page}`
-      )
+      fetch(`${PIXABAY_API_URL}${searchQuery}&page=${page}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.totalHits === 0) {
-            this.setState({
-              error: "No images found for the search query.",
-              loading: false,
-              images: [], // Clear the images array if an error occurs
-            });
+            setError("No images found for the search query.");
+            setLoading(false);
+            setImages([]);
             alert("No images found for the search query.");
           } else {
-            this.setState((prevState) => ({
-              images:
-                prevState.page === 1 ? data.hits : [...prevState.images, ...data.hits],
-              loading: false,
-            }));
+            setImages((prevImages) =>
+              page === 1 ? data.hits : [...prevImages, ...data.hits]
+            );
+            setLoading(false);
           }
         })
         .catch(() => {
-          this.setState({
-            error: "Error fetching images. Please try again later.",
-            loading: false,
-            images: [], // Clear the images array if an error occurs
-          });
+          setError("Error fetching images. Please try again later.");
+          setLoading(false);
+          setImages([]);
           alert("Error fetching images. Please try again later.");
         });
     } else {
-      this.setState({
-        error: "Please enter a search query.",
-        loading: false,
-        images: [], // Clear the images array if an error occurs
-      });
+      setError("Please enter a search query.");
+      setLoading(false);
+      setImages([]);
       // alert("Please enter a search query.");
     }
-  }
-  
-  
-  
+  };
 
-  render() {
-    const { images, selectedImage, loading, error } = this.state;
+  useEffect(() => {
+    fetchImages();
+  }, [searchQuery, page]);
 
-    return (
-      <div className="App">
-        <SearchBar onSearch={this.handleSearch} />
-        {error && <div className="ErrorMessage">{error}</div>}  
-        <ImageGallery images={images} onImageClick={this.handleImageClick} />
-        {loading && <Loader />}
-        {!loading && images.length > 0 && (
-          <Button onClick={this.handleLoadMore}>Load More</Button>
-        )}
-        {selectedImage && (
-          <Modal onClose={this.handleCloseModal}>
-            <img
-              src={selectedImage.largeImageURL}
-              alt={selectedImage.tags}
-            />
-          </Modal>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <SearchBar onSearch={handleSearch} />
+      {error && <div className="ErrorMessage">{error}</div>}
+      <ImageGallery images={images} onImageClick={handleImageClick} />
+      {loading && <Loader />}
+      {!loading && images.length > 0 && (
+        <Button onClick={handleLoadMore}>Load More</Button>
+      )}
+      {selectedImage && (
+        <Modal onClose={handleCloseModal}>
+          <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
+        </Modal>
+      )}
+    </div>
+  );
 }
 
 export default App;
