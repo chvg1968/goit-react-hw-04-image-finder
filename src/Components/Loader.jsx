@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -12,7 +12,7 @@ const overrideStyle = {
 
 function Loader(props) {
   const { loading, color, size, onColorChange } = props;
-  const [override, setOverride] = useState(overrideStyle);
+  const [override] = useState(overrideStyle);
 
   const handleColorChange = (e) => {
     onColorChange(e.target.value);
@@ -28,7 +28,6 @@ function Loader(props) {
         aria-label="Loading Spinner"
         data-testid="loader"
       />
-      <input type="color" value={color} onChange={handleColorChange} />
     </div>
   );
 }
