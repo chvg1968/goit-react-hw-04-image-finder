@@ -33,10 +33,10 @@ function Loader(props) {
 }
 
 Loader.propTypes = {
-  color: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
-  onColorChange: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  color: PropTypes.string,
+  size: PropTypes.number,
+  onColorChange: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 export default Loader;

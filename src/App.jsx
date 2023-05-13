@@ -23,8 +23,8 @@ function App() {
   };
 
   const handleLoadMore = () => {
-    setPage(page + 1);
-  };
+    setPage(prevPage => prevPage + 1);  
+  }
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -35,7 +35,7 @@ function App() {
   };
 
   const fetchImages = () => {
-    if (searchQuery !== "") {
+    if (searchQuery !== "") { 
       setLoading(true);
       setError(null);
 

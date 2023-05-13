@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { nanoid } from "nanoid";
 
 function ImageGallery(props) {
   const { images, onImageClick } = props;
@@ -11,10 +12,10 @@ function ImageGallery(props) {
 
   return (
     <div className="ImageGallery">
-      {galleryImages.map((image, index) => (
+      {galleryImages.map((image) => (
         <img
           className="ImageGalleryItem"
-          key={index}
+          key={nanoid()}
           src={image.webformatURL}
           alt={image.tags}
           onClick={() => onImageClick(image)}
