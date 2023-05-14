@@ -11,12 +11,12 @@ const overrideStyle = {
 };
 
 function Loader(props) {
-  const { loading, color, size, onColorChange } = props;
+  const { loading, color, size } = props;
   const [override] = useState(overrideStyle);
 
-  const handleColorChange = (e) => {
-    onColorChange(e.target.value);
-  };
+  // const handleColorChange = (e) => {
+  //   onColorChange(e.target.value);
+  // };
 
   return (
     <div className="sweet-loading">
